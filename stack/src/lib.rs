@@ -1,15 +1,24 @@
-trait Stack {
+struct Stack {
+    pub max_size : usize,
 }
+
+// impl Stack {
+//     pub fn with_max_size(max_size: usize) -> Self {
+//         Self {
+//             max_size,
+//         }
+//     }
+// }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test_stack_trait_can_be_implemented() {
-        struct AStack ();
-        impl Stack for AStack {
-        }
-        let _a_stack = AStack();
+    fn test_stack_struct_can_be_instantiated() {
+        let a_stack = Stack{max_size: 7};
+        // let a_stack = Stack::with_max_size(7);
+        let size = a_stack.max_size;
+        println!("max size is {}", size)
     }
 }
