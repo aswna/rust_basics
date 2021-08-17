@@ -1,20 +1,21 @@
 pub struct Stack<T> {
-    max_size: usize,
     elements: Vec<T>,
 }
 
 impl<T> Stack<T> {
-    pub fn new(size: usize) -> Self {
-        assert!(size > 0);
+    pub fn with_capacity(capacity: usize) -> Self {
         Self {
-            max_size: size,
-            elements: Vec::new(),
+            elements: Vec::with_capacity(capacity),
 
         }
     }
 
-    pub fn get_max_size(self) -> usize {
-        return self.max_size;
+    pub fn capacity(self) -> usize {
+        return self.elements.capacity();
+    }
+
+    pub fn len(self) -> usize {
+        return self.elements.len();
     }
 
     pub fn top(self) -> Option<T> {
@@ -31,38 +32,43 @@ mod tests {
     use super::*;
 
     #[test]
-    #[should_panic]
-    fn test_stack_cannot_be_instantiated_with_0_size() {
-        let an_invalid_stack = Stack::<String>::new(0);
+    fn test_stack_can_be_instantiated_with_capacity_0() {
+        let _an_invalid_stack = Stack::<String>::with_capacity(0);
     }
 
     #[test]
     fn test_stack_can_be_instantiated_with_string_type() {
-        let a_stack = Stack::<String>::new(1);
-        assert_eq!(1, a_stack.get_max_size());
+        let a_stack = Stack::<String>::with_capacity(1);
+        assert_eq!(1, a_stack.capacity());
     }
 
     #[test]
     fn test_stack_can_be_instantiated_with_i32_type() {
-        let a_stack = Stack::<i32>::new(13);
-        assert_eq!(13, a_stack.get_max_size());
+        let a_stack = Stack::<i32>::with_capacity(13);
+        assert_eq!(13, a_stack.capacity());
     }
 
     #[test]
     fn test_top_on_empty_stack_returns_null() {
-        let a_stack = Stack::<i32>::new(1);
+        let a_stack = Stack::<i32>::with_capacity(1);
         assert_eq!(None, a_stack.top());
     }
 
-    // TODO: test push less/equal/more elements than max_size
+    #[test]
+    fn test_len_on_empty_stack_returns_zero() {
+        let empty_stack = Stack::<i32>::with_capacity(0);
+        assert_eq!(0, empty_stack.len());
+    }
+
+    // TODO: test push less/equal/more elements than capacity
 
     #[test]
     fn test_top_on_non_empty_stack_returns_last_inserted_element() {
-        let a_stack = Stack::<i32>::new(1);
+        let a_stack = Stack::<i32>::with_capacity(1);
         // a_stack.push(123);
         assert_eq!(None, a_stack.top());
     }
 
-    // TODO: maybe support default size? (what is a good default?)
+    // TODO: maybe support default capacity? (what is a good default?)
     // TODO: maybe check elements type correctness?
 }
