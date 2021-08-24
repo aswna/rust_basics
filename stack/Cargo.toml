@@ -1,6 +1,6 @@
 [package]
 name = "stack"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["aswna <aswna@server.fake>"]
 edition = "2018"
 
