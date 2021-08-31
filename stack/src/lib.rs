@@ -9,11 +9,11 @@ impl<T> Stack<T> {
         }
     }
 
-    pub fn capacity(self) -> usize {
+    pub fn capacity(&self) -> usize {
         return self.elements.capacity();
     }
 
-    pub fn len(self) -> usize {
+    pub fn len(&self) -> usize {
         return self.elements.len();
     }
 
@@ -25,7 +25,9 @@ impl<T> Stack<T> {
         self.elements.push(element);
     }
 
-    // TODO: pop
+    pub fn pop(&mut self) -> Option<T> {
+        return self.elements.pop();
+    }
 }
 
 #[cfg(test)]
@@ -34,7 +36,8 @@ mod tests {
 
     #[test]
     fn test_stack_can_be_instantiated_with_capacity_0() {
-        let _a_zero_capacity_stack = Stack::<String>::with_capacity(0);
+        let a_zero_capacity_stack = Stack::<String>::with_capacity(0);
+        assert_eq!(0, a_zero_capacity_stack.capacity());
     }
 
     #[test]
@@ -50,27 +53,34 @@ mod tests {
     }
 
     #[test]
-    fn test_top_on_zero_capacity_stack_returns_null() {
+    fn test_top_on_zero_capacity_stack_returns_none() {
         let a_stack = Stack::<i32>::with_capacity(0);
         assert_eq!(None, a_stack.top());
     }
 
     #[test]
-    fn test_top_on_empty_stack_returns_null() {
+    fn test_top_on_empty_stack_returns_none() {
         let a_stack = Stack::<i32>::with_capacity(1);
         assert_eq!(None, a_stack.top());
     }
 
     #[test]
     fn test_len_on_zero_capacity_stack_returns_zero() {
-        let empty_stack = Stack::<i32>::with_capacity(0);
-        assert_eq!(0, empty_stack.len());
+        let a_zero_capacity_stack = Stack::<i32>::with_capacity(0);
+        assert_eq!(0, a_zero_capacity_stack.len());
     }
 
     #[test]
     fn test_len_on_empty_stack_returns_zero() {
         let a_stack = Stack::<i32>::with_capacity(1);
         assert_eq!(0, a_stack.len());
+    }
+
+    #[test]
+    fn test_push_can_be_called_on_empty_stack() {
+        let mut a_stack = Stack::<i32>::with_capacity(0);
+        a_stack.push(0);
+        assert_eq!(1, a_stack.len());
     }
 
     #[test]
@@ -90,11 +100,25 @@ mod tests {
 
     #[test]
     fn test_top_on_non_empty_stack_returns_last_inserted_element() {
-        let mut a_stack = Stack::<i32>::with_capacity(1);
+        let mut a_stack = Stack::<i32>::with_capacity(2);
+        a_stack.push(321);
         a_stack.push(123);
+        assert_eq!(2, a_stack.len());
         assert_eq!(Some(&123), a_stack.top());
     }
 
-    // TODO: maybe support default capacity? (what is a good default?)
-    // TODO: maybe check elements type correctness?
+    #[test]
+    fn test_pop_on_zero_capacity_stack_returns_none() {
+        let mut a_stack = Stack::<i32>::with_capacity(0);
+        assert_eq!(None, a_stack.pop());
+    }
+
+    #[test]
+    fn test_pop_on_a_stack_returns_last_inserted_element() {
+        let mut a_stack = Stack::<i32>::with_capacity(2);
+        a_stack.push(321);
+        a_stack.push(123);
+        assert_eq!(Some(123), a_stack.pop());
+        assert_eq!(1, a_stack.len());
+    }
 }
